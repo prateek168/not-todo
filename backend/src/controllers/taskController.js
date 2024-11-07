@@ -1,30 +1,23 @@
 import prisma from '../prisma/prismaClient.js';
 
+// Controller for daily tasks
 export const dailyTasks = async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = req.userId;
     const { title, body, deadline, isBacklog } = req.body;
-
-    // Optional: Uncomment if you want to validate the user exists
-    // const user = await prisma.user.findUnique({ where: { id: userId } });
-    // if (!user) {
-    //   return res.status(404).json({ message: "User not found" });
-    // }
-
+     console.log(userId)
     const newTask = await prisma.task.create({
       data: {
         title,
         body,
         deadline: new Date(deadline),
-        isBacklog: isBacklog || false,
-        author: {
-          connect: { id: userId } // Connect the existing user with the task
-        },
+        isBacklog: isBacklog || false,  // Default to false for daily tasks
+        authorId: userId ,
       },
     });
 
     return res.status(201).json({
-      message: "Task created successfully",
+      message: "Daily task created successfully",
       task: newTask,
     });
   } catch (error) {
@@ -36,31 +29,24 @@ export const dailyTasks = async (req, res) => {
   }
 };
 
+// Controller for monthly tasks
 export const monthlyTasks = async (req, res) => {
   try {
     const userId = req.user.id;
     const { title, body, deadline, isBacklog } = req.body;
-
-    // Optional: Uncomment if you want to validate the user exists
-    // const user = await prisma.user.findUnique({ where: { id: userId } });
-    // if (!user) {
-    //   return res.status(404).json({ message: "User not found" });
-    // }
 
     const newTask = await prisma.task.create({
       data: {
         title,
         body,
         deadline: new Date(deadline),
-        isBacklog: isBacklog || false,
-        author: {
-          connect: { id: userId } // Connect the existing user with the task
-        },
+        isBacklog: isBacklog || false,  // Default to false for monthly tasks
+        authorId: userId,
       },
     });
 
     return res.status(201).json({
-      message: "Task created successfully",
+      message: "Monthly task created successfully",
       task: newTask,
     });
   } catch (error) {
