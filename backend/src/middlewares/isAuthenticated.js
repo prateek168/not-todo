@@ -13,7 +13,7 @@ const isAuthenticated = (req, res, next) => {
 
     // Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-    req.id = decoded.userId;
+    req.user = decoded;
     next();
   } catch (error) {
     console.error("Token verification failed:", error);
