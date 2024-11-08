@@ -11,7 +11,7 @@ export const dailyTasks = async (req, res) => {
         title,
         body,
         deadline: new Date(deadline),
-        isBacklog: isBacklog || false,  // Default to false for daily tasks
+        isBacklog: isBacklog || false, 
         authorId: userId ,
       },
     });
